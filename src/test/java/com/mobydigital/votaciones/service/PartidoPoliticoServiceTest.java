@@ -104,4 +104,20 @@ class PartidoPoliticoServiceTest {
         verify(repository, times(1)).findAll();
     }
 
+    @Test
+    void testFindByIdPartidoExists() {
+        // Arrange
+        when(repository.findById(1L)).thenReturn(Optional.of(partido));
+
+        // Act
+        PartidoPoliticoResponseDTO response = service.findById(1L);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+        assertEquals("Union Civica Radical", response.getNombre());
+        assertEquals("UCR", response.getSigla());
+        verify(repository, times(1)).findById(1L);
+    }
+
 }
