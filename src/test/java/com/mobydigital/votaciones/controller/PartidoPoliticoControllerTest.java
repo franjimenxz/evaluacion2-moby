@@ -53,4 +53,19 @@ class PartidoPoliticoControllerTest {
         responseDTO.setSigla("UCR");
     }
 
+    @Test
+    void testCreatePartido() throws Exception {
+        // Arrange
+        when(service.create(any(PartidoPoliticoRequestDTO.class))).thenReturn(responseDTO);
+
+        // Act & Assert
+        mockMvc.perform(post("/api/partidos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nombre").value("Union Civica Radical"))
+                .andExpect(jsonPath("$.sigla").value("UCR"));
+    }
+
 }
