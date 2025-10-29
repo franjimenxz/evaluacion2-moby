@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Implementacion del servicio de PartidoPolitico
@@ -43,7 +42,7 @@ public class PartidoPoliticoServiceImpl implements PartidoPoliticoService {
     public List<PartidoPoliticoResponseDTO> findAll() {
         return repository.findAll().stream()
                 .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.mobydigital.votaciones.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mobydigital.votaciones.dto.PartidoPoliticoRequestDTO;
 import com.mobydigital.votaciones.dto.PartidoPoliticoResponseDTO;
-import com.mobydigital.votaciones.exception.ResourceNotFoundException;
 import com.mobydigital.votaciones.service.PartidoPoliticoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

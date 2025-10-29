@@ -4,8 +4,6 @@ import com.mobydigital.votaciones.dto.PartidoPoliticoRequestDTO;
 import com.mobydigital.votaciones.dto.PartidoPoliticoResponseDTO;
 import com.mobydigital.votaciones.service.PartidoPoliticoService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;

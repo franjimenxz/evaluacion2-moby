@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Implementacion del servicio de Candidato
@@ -45,7 +44,7 @@ public class CandidatoServiceImpl implements CandidatoService {
     public List<CandidatoResponseDTO> findAll() {
         return candidatoRepository.findAll().stream()
                 .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -75,7 +74,7 @@ public class CandidatoServiceImpl implements CandidatoService {
 
         return candidatoRepository.findByPartidoId(partidoId).stream()
                 .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
