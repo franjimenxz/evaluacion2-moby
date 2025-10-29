@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Implementacion del servicio de Voto
@@ -50,7 +49,7 @@ public class VotoServiceImpl implements VotoService {
     public List<VotoResponseDTO> findAll() {
         return votoRepository.findAll().stream()
                 .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
