@@ -46,4 +46,22 @@ class PartidoPoliticoServiceTest {
         requestDTO.setSigla("UCR");
     }
 
+    @Test
+    void testCreatePartidoSuccess() {
+        // Arrange
+        when(repository.existsBySigla("UCR")).thenReturn(false);
+        when(repository.save(any(PartidoPolitico.class))).thenReturn(partido);
+
+        // Act
+        PartidoPoliticoResponseDTO response = service.create(requestDTO);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+        assertEquals("Union Civica Radical", response.getNombre());
+        assertEquals("UCR", response.getSigla());
+        verify(repository, times(1)).existsBySigla("UCR");
+        verify(repository, times(1)).save(any(PartidoPolitico.class));
+    }
+
 }
