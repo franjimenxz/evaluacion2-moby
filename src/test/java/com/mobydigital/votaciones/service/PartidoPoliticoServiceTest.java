@@ -64,4 +64,20 @@ class PartidoPoliticoServiceTest {
         verify(repository, times(1)).save(any(PartidoPolitico.class));
     }
 
+    @Test
+    void testCreatePartidoWithDuplicateSigla() {
+        // Arrange
+        when(repository.existsBySigla("UCR")).thenReturn(true);
+
+        // Act & Assert
+        BadRequestException exception = assertThrows(
+            BadRequestException.class,
+            () -> service.create(requestDTO)
+        );
+
+        assertEquals("Ya existe un partido con la sigla UCR", exception.getMessage());
+        verify(repository, times(1)).existsBySigla("UCR");
+        verify(repository, never()).save(any(PartidoPolitico.class));
+    }
+
 }
