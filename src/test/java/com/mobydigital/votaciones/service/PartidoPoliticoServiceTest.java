@@ -136,4 +136,18 @@ class PartidoPoliticoServiceTest {
         verify(repository, times(1)).findById(99L);
     }
 
+    @Test
+    void testDeletePartidoSuccess() {
+        // Arrange
+        when(repository.findById(1L)).thenReturn(Optional.of(partido));
+        doNothing().when(repository).delete(partido);
+
+        // Act
+        service.delete(1L);
+
+        // Assert
+        verify(repository, times(1)).findById(1L);
+        verify(repository, times(1)).delete(partido);
+    }
+
 }
