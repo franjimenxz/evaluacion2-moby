@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,6 +92,96 @@ class CandidatoServiceTest {
         assertTrue(exception.getMessage().contains("99"));
         verify(partidoRepository, times(1)).findById(99L);
         verify(candidatoRepository, never()).save(any(Candidato.class));
+    }
+
+    @Test
+    void testFindAllCandidatos() {
+        // Arrange
+        Candidato candidato2 = new Candidato();
+        candidato2.setId(2L);
+        candidato2.setNombreCompleto("Maria Lopez");
+        candidato2.setPartido(partido);
+
+        List<Candidato> candidatos = Arrays.asList(candidato, candidato2);
+        when(candidatoRepository.findAll()).thenReturn(candidatos);
+
+        // Act
+        List<CandidatoResponseDTO> response = service.findAll();
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(2, response.size());
+        assertEquals("Juan Perez", response.get(0).getNombreCompleto());
+        assertEquals("Maria Lopez", response.get(1).getNombreCompleto());
+        verify(candidatoRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testFindByIdCandidatoExists() {
+        // Arrange
+        when(candidatoRepository.findById(1L)).thenReturn(Optional.of(candidato));
+
+        // Act
+        CandidatoResponseDTO response = service.findById(1L);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+        assertEquals("Juan Perez", response.getNombreCompleto());
+        assertEquals("UCR", response.getPartido().getSigla());
+        verify(candidatoRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void testFindByIdCandidatoNotFound() {
+        // Arrange
+        when(candidatoRepository.findById(99L)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        ResourceNotFoundException exception = assertThrows(
+            ResourceNotFoundException.class,
+            () -> service.findById(99L)
+        );
+
+        assertTrue(exception.getMessage().contains("Candidato"));
+        assertTrue(exception.getMessage().contains("99"));
+        verify(candidatoRepository, times(1)).findById(99L);
+    }
+
+    @Test
+    void testDeleteCandidatoSuccess() {
+        // Arrange
+        when(candidatoRepository.findById(1L)).thenReturn(Optional.of(candidato));
+        doNothing().when(candidatoRepository).delete(candidato);
+
+        // Act
+        service.delete(1L);
+
+        // Assert
+        verify(candidatoRepository, times(1)).findById(1L);
+        verify(candidatoRepository, times(1)).delete(candidato);
+    }
+
+    @Test
+    void testFindByPartido() {
+        // Arrange
+        Candidato candidato2 = new Candidato();
+        candidato2.setId(2L);
+        candidato2.setNombreCompleto("Maria Lopez");
+        candidato2.setPartido(partido);
+
+        List<Candidato> candidatos = Arrays.asList(candidato, candidato2);
+        when(candidatoRepository.findByPartidoId(1L)).thenReturn(candidatos);
+
+        // Act
+        List<CandidatoResponseDTO> response = service.findByPartido(1L);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(2, response.size());
+        assertEquals("Juan Perez", response.get(0).getNombreCompleto());
+        assertEquals("Maria Lopez", response.get(1).getNombreCompleto());
+        verify(candidatoRepository, times(1)).findByPartidoId(1L);
     }
 
 }
