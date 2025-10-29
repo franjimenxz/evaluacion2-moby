@@ -30,4 +30,12 @@ public class Candidato {
     @Column(nullable = false, length = 150)
     private String nombreCompleto;
 
+    /**
+     * Partido político al que pertenece el candidato.
+     * Relación ManyToOne: Muchos candidatos pueden pertenecer a un mismo partido.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partido_id", nullable = false)
+    private PartidoPolitico partido;
+
 }
