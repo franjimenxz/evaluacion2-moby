@@ -68,4 +68,24 @@ class PartidoPoliticoControllerTest {
                 .andExpect(jsonPath("$.sigla").value("UCR"));
     }
 
+    @Test
+    void testGetAllPartidos() throws Exception {
+        // Arrange
+        PartidoPoliticoResponseDTO responseDTO2 = new PartidoPoliticoResponseDTO();
+        responseDTO2.setId(2L);
+        responseDTO2.setNombre("Propuesta Republicana");
+        responseDTO2.setSigla("PRO");
+
+        List<PartidoPoliticoResponseDTO> partidos = Arrays.asList(responseDTO, responseDTO2);
+        when(service.findAll()).thenReturn(partidos);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/partidos"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].sigla").value("UCR"))
+                .andExpect(jsonPath("$[1].sigla").value("PRO"));
+    }
+
 }
