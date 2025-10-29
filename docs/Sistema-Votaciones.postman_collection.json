@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Sistema de Gestion de Votaciones",
+		"description": "Coleccion de endpoints para el sistema de votaciones - incluye operaciones CRUD para partidos politicos, candidatos y votos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Partidos Politicos",
+			"item": [
+				{
+					"name": "Crear Partido Politico",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"});",
+									"",
+									"pm.test(\"Response has nombre and sigla\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('nombre');",
+									"    pm.expect(jsonData).to.have.property('sigla');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Union Civica Radical\",\n  \"sigla\": \"UCR\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/partidos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "partidos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos los Partidos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is an array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/partidos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "partidos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Partido por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/partidos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "partidos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Partido",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/partidos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "partidos", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Candidatos",
+			"item": [
+				{
+					"name": "Crear Candidato",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombreCompleto\": \"Juan Perez\",\n  \"partidoId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/candidatos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "candidatos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos los Candidatos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/candidatos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "candidatos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Candidato por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/candidatos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "candidatos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Candidato",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/candidatos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "candidatos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Candidatos por Partido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/candidatos/partido/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "candidatos", "partido", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Votos",
+			"item": [
+				{
+					"name": "Registrar Voto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has voto data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('candidato');",
+									"    pm.expect(jsonData).to.have.property('fechaEmision');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"candidatoId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/votos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos los Votos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contar Votos por Candidato",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos/count/candidato/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos", "count", "candidato", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contar Votos por Partido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos/count/partido/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos", "count", "partido", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Estadisticas por Candidato",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos/estadisticas/candidatos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos", "estadisticas", "candidatos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Estadisticas por Partido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos/estadisticas/partidos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos", "estadisticas", "partidos"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
