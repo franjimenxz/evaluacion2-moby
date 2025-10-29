@@ -27,6 +27,14 @@ public class Voto {
     private Long id;
 
     /**
+     * Candidato al que se le emitió el voto.
+     * Relación ManyToOne: Muchos votos pueden ser emitidos a un mismo candidato.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "candidato_id", nullable = false)
+    private Candidato candidato;
+
+    /**
      * Fecha y hora en que se emitió el voto.
      */
     @Column(nullable = false)
