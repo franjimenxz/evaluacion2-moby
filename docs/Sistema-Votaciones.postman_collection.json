@@ -153,7 +153,95 @@
 		},
 		{
 			"name": "Votos",
-			"item": []
+			"item": [
+				{
+					"name": "Registrar Voto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"candidatoId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/votos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos los Votos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contar Votos por Candidato",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos/count/candidato/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos", "count", "candidato", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contar Votos por Partido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos/count/partido/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos", "count", "partido", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Estadisticas por Candidato",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos/estadisticas/candidatos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos", "estadisticas", "candidatos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Estadisticas por Partido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/votos/estadisticas/partidos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "votos", "estadisticas", "partidos"]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
