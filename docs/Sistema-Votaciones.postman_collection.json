@@ -8,7 +8,69 @@
 	"item": [
 		{
 			"name": "Partidos Politicos",
-			"item": []
+			"item": [
+				{
+					"name": "Crear Partido Politico",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Union Civica Radical\",\n  \"sigla\": \"UCR\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/partidos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "partidos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos los Partidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/partidos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "partidos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Partido por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/partidos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "partidos", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Partido",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/partidos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "partidos", "1"]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Candidatos",
