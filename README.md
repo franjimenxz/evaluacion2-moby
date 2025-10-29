@@ -148,6 +148,9 @@ El proyecto ha sido analizado con SonarLint para garantizar la calidad del codig
 
 ![SonarLint Analysis](docs/sonarlint-analysis.png)
 
+https://imgur.com/8LTdkhk
+(Se me rompe la imagen en GitHub)
+
 **Resultado:** 0 issues encontrados, codigo limpio y sin code smells
 
 ## Autor
