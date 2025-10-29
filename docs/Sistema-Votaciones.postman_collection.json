@@ -1,0 +1,22 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Sistema de Gestion de Votaciones",
+		"description": "Coleccion de endpoints para el sistema de votaciones - incluye operaciones CRUD para partidos politicos, candidatos y votos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Partidos Politicos",
+			"item": []
+		},
+		{
+			"name": "Candidatos",
+			"item": []
+		},
+		{
+			"name": "Votos",
+			"item": []
+		}
+	]
+}
