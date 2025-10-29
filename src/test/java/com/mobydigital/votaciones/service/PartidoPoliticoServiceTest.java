@@ -120,4 +120,20 @@ class PartidoPoliticoServiceTest {
         verify(repository, times(1)).findById(1L);
     }
 
+    @Test
+    void testFindByIdPartidoNotFound() {
+        // Arrange
+        when(repository.findById(99L)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        ResourceNotFoundException exception = assertThrows(
+            ResourceNotFoundException.class,
+            () -> service.findById(99L)
+        );
+
+        assertTrue(exception.getMessage().contains("PartidoPolitico"));
+        assertTrue(exception.getMessage().contains("99"));
+        verify(repository, times(1)).findById(99L);
+    }
+
 }
