@@ -146,6 +146,10 @@ src/
 
 El proyecto ha sido analizado con SonarLint para garantizar la calidad del codigo y seguir buenas practicas
 
+![SonarLint Analysis](docs/sonarlint-analysis.png)
+
+**Resultado:** 0 issues encontrados, codigo limpio y sin code smells
+
 ## Autor
 
 Franco Jimenez
