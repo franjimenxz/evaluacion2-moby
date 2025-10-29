@@ -77,7 +77,7 @@ class PartidoPoliticoServiceTest {
             () -> service.create(requestDTO)
         );
 
-        assertEquals("Ya existe un partido con la sigla UCR", exception.getMessage());
+        assertEquals("Ya existe un partido politico con la sigla: UCR", exception.getMessage());
         verify(repository, times(1)).existsBySigla("UCR");
         verify(repository, never()).save(any(PartidoPolitico.class));
     }
