@@ -74,4 +74,22 @@ class CandidatoServiceTest {
         verify(candidatoRepository, times(1)).save(any(Candidato.class));
     }
 
+    @Test
+    void testCreateCandidatoWithInvalidPartido() {
+        // Arrange
+        when(partidoRepository.findById(99L)).thenReturn(Optional.empty());
+        requestDTO.setPartidoId(99L);
+
+        // Act & Assert
+        ResourceNotFoundException exception = assertThrows(
+            ResourceNotFoundException.class,
+            () -> service.create(requestDTO)
+        );
+
+        assertTrue(exception.getMessage().contains("PartidoPolitico"));
+        assertTrue(exception.getMessage().contains("99"));
+        verify(partidoRepository, times(1)).findById(99L);
+        verify(candidatoRepository, never()).save(any(Candidato.class));
+    }
+
 }
