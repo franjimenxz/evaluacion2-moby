@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -78,6 +80,28 @@ class PartidoPoliticoServiceTest {
         assertEquals("Ya existe un partido con la sigla UCR", exception.getMessage());
         verify(repository, times(1)).existsBySigla("UCR");
         verify(repository, never()).save(any(PartidoPolitico.class));
+    }
+
+    @Test
+    void testFindAllPartidos() {
+        // Arrange
+        PartidoPolitico partido2 = new PartidoPolitico();
+        partido2.setId(2L);
+        partido2.setNombre("Propuesta Republicana");
+        partido2.setSigla("PRO");
+
+        List<PartidoPolitico> partidos = Arrays.asList(partido, partido2);
+        when(repository.findAll()).thenReturn(partidos);
+
+        // Act
+        List<PartidoPoliticoResponseDTO> response = service.findAll();
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(2, response.size());
+        assertEquals("UCR", response.get(0).getSigla());
+        assertEquals("PRO", response.get(1).getSigla());
+        verify(repository, times(1)).findAll();
     }
 
 }
