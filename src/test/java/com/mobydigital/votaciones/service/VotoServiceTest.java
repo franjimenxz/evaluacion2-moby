@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -185,7 +186,7 @@ class VotoServiceTest {
     void testGetEstadisticasPorPartido() {
         // Arrange
         Object[] resultado1 = new Object[]{partido, 200L};
-        List<Object[]> resultados = Arrays.asList(resultado1);
+        List<Object[]> resultados = Collections.singletonList(resultado1);
         when(votoRepository.countVotosByPartido()).thenReturn(resultados);
 
         // Act
