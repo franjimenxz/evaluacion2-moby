@@ -60,14 +60,14 @@ class CandidatoServiceTest {
 
     @Test
     void testCreateCandidatoSuccess() {
-        // Arrange
+        // Preparar
         when(partidoRepository.findById(1L)).thenReturn(Optional.of(partido));
         when(candidatoRepository.save(any(Candidato.class))).thenReturn(candidato);
 
-        // Act
+        // Actuar
         CandidatoResponseDTO response = service.create(requestDTO);
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(1L, response.getId());
         assertEquals("Juan Perez", response.getNombreCompleto());
@@ -78,11 +78,11 @@ class CandidatoServiceTest {
 
     @Test
     void testCreateCandidatoWithInvalidPartido() {
-        // Arrange
+        // Preparar
         when(partidoRepository.findById(99L)).thenReturn(Optional.empty());
         requestDTO.setPartidoId(99L);
 
-        // Act & Assert
+        // Actuar y Verificar
         ResourceNotFoundException exception = assertThrows(
             ResourceNotFoundException.class,
             () -> service.create(requestDTO)
@@ -96,7 +96,7 @@ class CandidatoServiceTest {
 
     @Test
     void testFindAllCandidatos() {
-        // Arrange
+        // Preparar
         Candidato candidato2 = new Candidato();
         candidato2.setId(2L);
         candidato2.setNombreCompleto("Maria Lopez");
@@ -105,10 +105,10 @@ class CandidatoServiceTest {
         List<Candidato> candidatos = Arrays.asList(candidato, candidato2);
         when(candidatoRepository.findAll()).thenReturn(candidatos);
 
-        // Act
+        // Actuar
         List<CandidatoResponseDTO> response = service.findAll();
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(2, response.size());
         assertEquals("Juan Perez", response.get(0).getNombreCompleto());
@@ -118,13 +118,13 @@ class CandidatoServiceTest {
 
     @Test
     void testFindByIdCandidatoExists() {
-        // Arrange
+        // Preparar
         when(candidatoRepository.findById(1L)).thenReturn(Optional.of(candidato));
 
-        // Act
+        // Actuar
         CandidatoResponseDTO response = service.findById(1L);
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(1L, response.getId());
         assertEquals("Juan Perez", response.getNombreCompleto());
@@ -134,10 +134,10 @@ class CandidatoServiceTest {
 
     @Test
     void testFindByIdCandidatoNotFound() {
-        // Arrange
+        // Preparar
         when(candidatoRepository.findById(99L)).thenReturn(Optional.empty());
 
-        // Act & Assert
+        // Actuar y Verificar
         ResourceNotFoundException exception = assertThrows(
             ResourceNotFoundException.class,
             () -> service.findById(99L)
@@ -150,21 +150,21 @@ class CandidatoServiceTest {
 
     @Test
     void testDeleteCandidatoSuccess() {
-        // Arrange
+        // Preparar
         when(candidatoRepository.findById(1L)).thenReturn(Optional.of(candidato));
         doNothing().when(candidatoRepository).delete(candidato);
 
-        // Act
+        // Actuar
         service.delete(1L);
 
-        // Assert
+        // Verificar
         verify(candidatoRepository, times(1)).findById(1L);
         verify(candidatoRepository, times(1)).delete(candidato);
     }
 
     @Test
     void testFindByPartido() {
-        // Arrange
+        // Preparar
         Candidato candidato2 = new Candidato();
         candidato2.setId(2L);
         candidato2.setNombreCompleto("Maria Lopez");
@@ -174,10 +174,10 @@ class CandidatoServiceTest {
         when(partidoRepository.existsById(1L)).thenReturn(true);
         when(candidatoRepository.findByPartidoId(1L)).thenReturn(candidatos);
 
-        // Act
+        // Actuar
         List<CandidatoResponseDTO> response = service.findByPartido(1L);
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(2, response.size());
         assertEquals("Juan Perez", response.get(0).getNombreCompleto());

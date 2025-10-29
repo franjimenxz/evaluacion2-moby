@@ -67,10 +67,10 @@ class VotoControllerTest {
 
     @Test
     void testRegistrarVoto() throws Exception {
-        // Arrange
+        // Preparar
         when(service.registrarVoto(any(VotoRequestDTO.class))).thenReturn(responseDTO);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(post("/api/votos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDTO)))
@@ -82,7 +82,7 @@ class VotoControllerTest {
 
     @Test
     void testGetAllVotos() throws Exception {
-        // Arrange
+        // Preparar
         VotoResponseDTO responseDTO2 = new VotoResponseDTO();
         responseDTO2.setId(2L);
         responseDTO2.setCandidato(candidatoDTO);
@@ -91,7 +91,7 @@ class VotoControllerTest {
         List<VotoResponseDTO> votos = Arrays.asList(responseDTO, responseDTO2);
         when(service.findAll()).thenReturn(votos);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/votos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -102,10 +102,10 @@ class VotoControllerTest {
 
     @Test
     void testCountByCandidato() throws Exception {
-        // Arrange
+        // Preparar
         when(service.countByCandidato(1L)).thenReturn(150L);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/votos/count/candidato/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(150));
@@ -113,10 +113,10 @@ class VotoControllerTest {
 
     @Test
     void testCountByPartido() throws Exception {
-        // Arrange
+        // Preparar
         when(service.countByPartido(1L)).thenReturn(300L);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/votos/count/partido/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(300));
@@ -124,7 +124,7 @@ class VotoControllerTest {
 
     @Test
     void testGetEstadisticasPorCandidato() throws Exception {
-        // Arrange
+        // Preparar
         VotosCountDTO stats1 = new VotosCountDTO();
         stats1.setId(1L);
         stats1.setNombre("Juan Perez");
@@ -138,7 +138,7 @@ class VotoControllerTest {
         List<VotosCountDTO> estadisticas = Arrays.asList(stats1, stats2);
         when(service.getEstadisticasPorCandidato()).thenReturn(estadisticas);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/votos/estadisticas/candidatos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -151,7 +151,7 @@ class VotoControllerTest {
 
     @Test
     void testGetEstadisticasPorPartido() throws Exception {
-        // Arrange
+        // Preparar
         VotosCountDTO stats1 = new VotosCountDTO();
         stats1.setId(1L);
         stats1.setNombre("Union Civica Radical");
@@ -160,7 +160,7 @@ class VotoControllerTest {
         List<VotosCountDTO> estadisticas = Arrays.asList(stats1);
         when(service.getEstadisticasPorPartido()).thenReturn(estadisticas);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/votos/estadisticas/partidos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -171,11 +171,11 @@ class VotoControllerTest {
 
     @Test
     void testRegistrarVotoWithValidationErrors() throws Exception {
-        // Arrange
+        // Preparar
         VotoRequestDTO invalidRequest = new VotoRequestDTO();
         invalidRequest.setCandidatoId(null); // Null candidato
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(post("/api/votos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidRequest)))
