@@ -171,6 +171,7 @@ class CandidatoServiceTest {
         candidato2.setPartido(partido);
 
         List<Candidato> candidatos = Arrays.asList(candidato, candidato2);
+        when(partidoRepository.existsById(1L)).thenReturn(true);
         when(candidatoRepository.findByPartidoId(1L)).thenReturn(candidatos);
 
         // Act
@@ -181,6 +182,7 @@ class CandidatoServiceTest {
         assertEquals(2, response.size());
         assertEquals("Juan Perez", response.get(0).getNombreCompleto());
         assertEquals("Maria Lopez", response.get(1).getNombreCompleto());
+        verify(partidoRepository, times(1)).existsById(1L);
         verify(candidatoRepository, times(1)).findByPartidoId(1L);
     }
 
