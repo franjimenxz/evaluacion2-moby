@@ -55,10 +55,10 @@ class PartidoPoliticoControllerTest {
 
     @Test
     void testCreatePartido() throws Exception {
-        // Arrange
+        // Preparar
         when(service.create(any(PartidoPoliticoRequestDTO.class))).thenReturn(responseDTO);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(post("/api/partidos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDTO)))
@@ -70,7 +70,7 @@ class PartidoPoliticoControllerTest {
 
     @Test
     void testGetAllPartidos() throws Exception {
-        // Arrange
+        // Preparar
         PartidoPoliticoResponseDTO responseDTO2 = new PartidoPoliticoResponseDTO();
         responseDTO2.setId(2L);
         responseDTO2.setNombre("Propuesta Republicana");
@@ -79,7 +79,7 @@ class PartidoPoliticoControllerTest {
         List<PartidoPoliticoResponseDTO> partidos = Arrays.asList(responseDTO, responseDTO2);
         when(service.findAll()).thenReturn(partidos);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/partidos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -90,10 +90,10 @@ class PartidoPoliticoControllerTest {
 
     @Test
     void testGetPartidoById() throws Exception {
-        // Arrange
+        // Preparar
         when(service.findById(1L)).thenReturn(responseDTO);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/partidos/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
@@ -103,22 +103,22 @@ class PartidoPoliticoControllerTest {
 
     @Test
     void testDeletePartido() throws Exception {
-        // Arrange
+        // Preparar
         doNothing().when(service).delete(1L);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(delete("/api/partidos/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void testCreatePartidoWithValidationErrors() throws Exception {
-        // Arrange
+        // Preparar
         PartidoPoliticoRequestDTO invalidRequest = new PartidoPoliticoRequestDTO();
         invalidRequest.setNombre(""); // Empty name
         invalidRequest.setSigla("abc"); // Lowercase sigla
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(post("/api/partidos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidRequest)))

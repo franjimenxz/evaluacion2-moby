@@ -60,10 +60,10 @@ class CandidatoControllerTest {
 
     @Test
     void testCreateCandidato() throws Exception {
-        // Arrange
+        // Preparar
         when(service.create(any(CandidatoRequestDTO.class))).thenReturn(responseDTO);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(post("/api/candidatos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDTO)))
@@ -75,7 +75,7 @@ class CandidatoControllerTest {
 
     @Test
     void testGetAllCandidatos() throws Exception {
-        // Arrange
+        // Preparar
         CandidatoResponseDTO responseDTO2 = new CandidatoResponseDTO();
         responseDTO2.setId(2L);
         responseDTO2.setNombreCompleto("Maria Lopez");
@@ -84,7 +84,7 @@ class CandidatoControllerTest {
         List<CandidatoResponseDTO> candidatos = Arrays.asList(responseDTO, responseDTO2);
         when(service.findAll()).thenReturn(candidatos);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/candidatos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -95,10 +95,10 @@ class CandidatoControllerTest {
 
     @Test
     void testGetCandidatoById() throws Exception {
-        // Arrange
+        // Preparar
         when(service.findById(1L)).thenReturn(responseDTO);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/candidatos/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
@@ -108,17 +108,17 @@ class CandidatoControllerTest {
 
     @Test
     void testDeleteCandidato() throws Exception {
-        // Arrange
+        // Preparar
         doNothing().when(service).delete(1L);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(delete("/api/candidatos/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void testGetCandidatosByPartido() throws Exception {
-        // Arrange
+        // Preparar
         CandidatoResponseDTO responseDTO2 = new CandidatoResponseDTO();
         responseDTO2.setId(2L);
         responseDTO2.setNombreCompleto("Maria Lopez");
@@ -127,7 +127,7 @@ class CandidatoControllerTest {
         List<CandidatoResponseDTO> candidatos = Arrays.asList(responseDTO, responseDTO2);
         when(service.findByPartido(1L)).thenReturn(candidatos);
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(get("/api/candidatos/partido/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -138,12 +138,12 @@ class CandidatoControllerTest {
 
     @Test
     void testCreateCandidatoWithValidationErrors() throws Exception {
-        // Arrange
+        // Preparar
         CandidatoRequestDTO invalidRequest = new CandidatoRequestDTO();
         invalidRequest.setNombreCompleto(""); // Empty name
         invalidRequest.setPartidoId(null); // Null partido
 
-        // Act & Assert
+        // Actuar y Verificar
         mockMvc.perform(post("/api/candidatos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidRequest)))

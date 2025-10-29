@@ -50,14 +50,14 @@ class PartidoPoliticoServiceTest {
 
     @Test
     void testCreatePartidoSuccess() {
-        // Arrange
+        // Preparar
         when(repository.existsBySigla("UCR")).thenReturn(false);
         when(repository.save(any(PartidoPolitico.class))).thenReturn(partido);
 
-        // Act
+        // Actuar
         PartidoPoliticoResponseDTO response = service.create(requestDTO);
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(1L, response.getId());
         assertEquals("Union Civica Radical", response.getNombre());
@@ -68,10 +68,10 @@ class PartidoPoliticoServiceTest {
 
     @Test
     void testCreatePartidoWithDuplicateSigla() {
-        // Arrange
+        // Preparar
         when(repository.existsBySigla("UCR")).thenReturn(true);
 
-        // Act & Assert
+        // Actuar y Verificar
         BadRequestException exception = assertThrows(
             BadRequestException.class,
             () -> service.create(requestDTO)
@@ -84,7 +84,7 @@ class PartidoPoliticoServiceTest {
 
     @Test
     void testFindAllPartidos() {
-        // Arrange
+        // Preparar
         PartidoPolitico partido2 = new PartidoPolitico();
         partido2.setId(2L);
         partido2.setNombre("Propuesta Republicana");
@@ -93,10 +93,10 @@ class PartidoPoliticoServiceTest {
         List<PartidoPolitico> partidos = Arrays.asList(partido, partido2);
         when(repository.findAll()).thenReturn(partidos);
 
-        // Act
+        // Actuar
         List<PartidoPoliticoResponseDTO> response = service.findAll();
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(2, response.size());
         assertEquals("UCR", response.get(0).getSigla());
@@ -106,13 +106,13 @@ class PartidoPoliticoServiceTest {
 
     @Test
     void testFindByIdPartidoExists() {
-        // Arrange
+        // Preparar
         when(repository.findById(1L)).thenReturn(Optional.of(partido));
 
-        // Act
+        // Actuar
         PartidoPoliticoResponseDTO response = service.findById(1L);
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(1L, response.getId());
         assertEquals("Union Civica Radical", response.getNombre());
@@ -122,10 +122,10 @@ class PartidoPoliticoServiceTest {
 
     @Test
     void testFindByIdPartidoNotFound() {
-        // Arrange
+        // Preparar
         when(repository.findById(99L)).thenReturn(Optional.empty());
 
-        // Act & Assert
+        // Actuar y Verificar
         ResourceNotFoundException exception = assertThrows(
             ResourceNotFoundException.class,
             () -> service.findById(99L)
@@ -138,14 +138,14 @@ class PartidoPoliticoServiceTest {
 
     @Test
     void testDeletePartidoSuccess() {
-        // Arrange
+        // Preparar
         when(repository.findById(1L)).thenReturn(Optional.of(partido));
         doNothing().when(repository).delete(partido);
 
-        // Act
+        // Actuar
         service.delete(1L);
 
-        // Assert
+        // Verificar
         verify(repository, times(1)).findById(1L);
         verify(repository, times(1)).delete(partido);
     }

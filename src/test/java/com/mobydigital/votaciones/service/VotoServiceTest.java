@@ -69,14 +69,14 @@ class VotoServiceTest {
 
     @Test
     void testRegistrarVotoSuccess() {
-        // Arrange
+        // Preparar
         when(candidatoRepository.findById(1L)).thenReturn(Optional.of(candidato));
         when(votoRepository.save(any(Voto.class))).thenReturn(voto);
 
-        // Act
+        // Actuar
         VotoResponseDTO response = service.registrarVoto(requestDTO);
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(1L, response.getId());
         assertEquals("Juan Perez", response.getCandidato().getNombreCompleto());
@@ -88,11 +88,11 @@ class VotoServiceTest {
 
     @Test
     void testRegistrarVotoWithInvalidCandidato() {
-        // Arrange
+        // Preparar
         when(candidatoRepository.findById(99L)).thenReturn(Optional.empty());
         requestDTO.setCandidatoId(99L);
 
-        // Act & Assert
+        // Actuar y Verificar
         ResourceNotFoundException exception = assertThrows(
             ResourceNotFoundException.class,
             () -> service.registrarVoto(requestDTO)
@@ -106,7 +106,7 @@ class VotoServiceTest {
 
     @Test
     void testFindAllVotos() {
-        // Arrange
+        // Preparar
         Voto voto2 = new Voto();
         voto2.setId(2L);
         voto2.setCandidato(candidato);
@@ -115,10 +115,10 @@ class VotoServiceTest {
         List<Voto> votos = Arrays.asList(voto, voto2);
         when(votoRepository.findAll()).thenReturn(votos);
 
-        // Act
+        // Actuar
         List<VotoResponseDTO> response = service.findAll();
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(2, response.size());
         assertEquals(1L, response.get(0).getId());
@@ -128,14 +128,14 @@ class VotoServiceTest {
 
     @Test
     void testCountByCandidato() {
-        // Arrange
+        // Preparar
         when(candidatoRepository.existsById(1L)).thenReturn(true);
         when(votoRepository.countByCandidatoId(1L)).thenReturn(150L);
 
-        // Act
+        // Actuar
         Long count = service.countByCandidato(1L);
 
-        // Assert
+        // Verificar
         assertNotNull(count);
         assertEquals(150L, count);
         verify(candidatoRepository, times(1)).existsById(1L);
@@ -144,13 +144,13 @@ class VotoServiceTest {
 
     @Test
     void testCountByPartido() {
-        // Arrange
+        // Preparar
         when(votoRepository.countByPartidoId(1L)).thenReturn(300L);
 
-        // Act
+        // Actuar
         Long count = service.countByPartido(1L);
 
-        // Assert
+        // Verificar
         assertNotNull(count);
         assertEquals(300L, count);
         verify(votoRepository, times(1)).countByPartidoId(1L);
@@ -158,7 +158,7 @@ class VotoServiceTest {
 
     @Test
     void testGetEstadisticasPorCandidato() {
-        // Arrange
+        // Preparar
         Candidato candidato2 = new Candidato();
         candidato2.setId(2L);
         candidato2.setNombreCompleto("Maria Lopez");
@@ -169,10 +169,10 @@ class VotoServiceTest {
         when(votoRepository.countByCandidatoId(1L)).thenReturn(100L);
         when(votoRepository.countByCandidatoId(2L)).thenReturn(80L);
 
-        // Act
+        // Actuar
         List<VotosCountDTO> response = service.getEstadisticasPorCandidato();
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(2, response.size());
         assertEquals("Juan Perez", response.get(0).getNombre());
@@ -184,15 +184,15 @@ class VotoServiceTest {
 
     @Test
     void testGetEstadisticasPorPartido() {
-        // Arrange
+        // Preparar
         Object[] resultado1 = new Object[]{partido, 200L};
         List<Object[]> resultados = Collections.singletonList(resultado1);
         when(votoRepository.countVotosByPartido()).thenReturn(resultados);
 
-        // Act
+        // Actuar
         List<VotosCountDTO> response = service.getEstadisticasPorPartido();
 
-        // Assert
+        // Verificar
         assertNotNull(response);
         assertEquals(1, response.size());
         assertEquals("Union Civica Radical", response.get(0).getNombre());
