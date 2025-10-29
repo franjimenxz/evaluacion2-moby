@@ -88,4 +88,41 @@ class PartidoPoliticoControllerTest {
                 .andExpect(jsonPath("$[1].sigla").value("PRO"));
     }
 
+    @Test
+    void testGetPartidoById() throws Exception {
+        // Arrange
+        when(service.findById(1L)).thenReturn(responseDTO);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/partidos/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nombre").value("Union Civica Radical"))
+                .andExpect(jsonPath("$.sigla").value("UCR"));
+    }
+
+    @Test
+    void testDeletePartido() throws Exception {
+        // Arrange
+        doNothing().when(service).delete(1L);
+
+        // Act & Assert
+        mockMvc.perform(delete("/api/partidos/1"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testCreatePartidoWithValidationErrors() throws Exception {
+        // Arrange
+        PartidoPoliticoRequestDTO invalidRequest = new PartidoPoliticoRequestDTO();
+        invalidRequest.setNombre(""); // Empty name
+        invalidRequest.setSigla("abc"); // Lowercase sigla
+
+        // Act & Assert
+        mockMvc.perform(post("/api/partidos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(invalidRequest)))
+                .andExpect(status().isBadRequest());
+    }
+
 }
