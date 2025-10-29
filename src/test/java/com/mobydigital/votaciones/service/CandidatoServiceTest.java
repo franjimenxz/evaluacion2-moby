@@ -56,4 +56,22 @@ class CandidatoServiceTest {
         requestDTO.setPartidoId(1L);
     }
 
+    @Test
+    void testCreateCandidatoSuccess() {
+        // Arrange
+        when(partidoRepository.findById(1L)).thenReturn(Optional.of(partido));
+        when(candidatoRepository.save(any(Candidato.class))).thenReturn(candidato);
+
+        // Act
+        CandidatoResponseDTO response = service.create(requestDTO);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+        assertEquals("Juan Perez", response.getNombreCompleto());
+        assertEquals("UCR", response.getPartido().getSigla());
+        verify(partidoRepository, times(1)).findById(1L);
+        verify(candidatoRepository, times(1)).save(any(Candidato.class));
+    }
+
 }
