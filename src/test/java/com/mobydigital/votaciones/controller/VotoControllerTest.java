@@ -3,6 +3,7 @@ package com.mobydigital.votaciones.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mobydigital.votaciones.dto.CandidatoResponseDTO;
 import com.mobydigital.votaciones.dto.PartidoPoliticoResponseDTO;
+import com.mobydigital.votaciones.dto.VotoCountResponseDTO;
 import com.mobydigital.votaciones.dto.VotoRequestDTO;
 import com.mobydigital.votaciones.dto.VotoResponseDTO;
 import com.mobydigital.votaciones.dto.VotosCountDTO;
@@ -103,23 +104,37 @@ class VotoControllerTest {
     @Test
     void testCountByCandidato() throws Exception {
         // Preparar
-        when(service.countByCandidato(1L)).thenReturn(150L);
+        VotoCountResponseDTO countResponse = new VotoCountResponseDTO();
+        countResponse.setId(1L);
+        countResponse.setNombre("Martin Lousteau");
+        countResponse.setCantidadVotos(150L);
+
+        when(service.countByCandidatoDetallado(1L)).thenReturn(countResponse);
 
         // Actuar y Verificar
         mockMvc.perform(get("/api/votos/count/candidato/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(150));
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nombre").value("Martin Lousteau"))
+                .andExpect(jsonPath("$.cantidadVotos").value(150));
     }
 
     @Test
     void testCountByPartido() throws Exception {
         // Preparar
-        when(service.countByPartido(1L)).thenReturn(300L);
+        VotoCountResponseDTO countResponse = new VotoCountResponseDTO();
+        countResponse.setId(1L);
+        countResponse.setNombre("Union Civica Radical");
+        countResponse.setCantidadVotos(300L);
+
+        when(service.countByPartidoDetallado(1L)).thenReturn(countResponse);
 
         // Actuar y Verificar
         mockMvc.perform(get("/api/votos/count/partido/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(300));
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nombre").value("Union Civica Radical"))
+                .andExpect(jsonPath("$.cantidadVotos").value(300));
     }
 
     @Test
