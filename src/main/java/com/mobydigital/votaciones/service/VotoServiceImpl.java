@@ -2,6 +2,7 @@ package com.mobydigital.votaciones.service;
 
 import com.mobydigital.votaciones.dto.CandidatoResponseDTO;
 import com.mobydigital.votaciones.dto.PartidoPoliticoResponseDTO;
+import com.mobydigital.votaciones.dto.VotoCountResponseDTO;
 import com.mobydigital.votaciones.dto.VotoRequestDTO;
 import com.mobydigital.votaciones.dto.VotoResponseDTO;
 import com.mobydigital.votaciones.dto.VotosCountDTO;
@@ -10,6 +11,7 @@ import com.mobydigital.votaciones.entity.PartidoPolitico;
 import com.mobydigital.votaciones.entity.Voto;
 import com.mobydigital.votaciones.exception.ResourceNotFoundException;
 import com.mobydigital.votaciones.repository.CandidatoRepository;
+import com.mobydigital.votaciones.repository.PartidoPoliticoRepository;
 import com.mobydigital.votaciones.repository.VotoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ public class VotoServiceImpl implements VotoService {
 
     private final VotoRepository votoRepository;
     private final CandidatoRepository candidatoRepository;
+    private final PartidoPoliticoRepository partidoRepository;
 
     @Override
     @Transactional
