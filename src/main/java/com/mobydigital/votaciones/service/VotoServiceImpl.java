@@ -94,6 +94,48 @@ public class VotoServiceImpl implements VotoService {
 
     @Override
     @Transactional(readOnly = true)
+    public VotoCountResponseDTO countByCandidatoDetallado(Long candidatoId) {
+        log.info("Obteniendo conteo detallado de votos del candidato id {}", candidatoId);
+
+        Candidato candidato = candidatoRepository.findById(candidatoId)
+                .orElseThrow(() -> {
+                    log.warn("No se puede obtener conteo porque el candidato id {} no existe", candidatoId);
+                    return new ResourceNotFoundException("Candidato", "id", candidatoId);
+                });
+
+        Long count = votoRepository.countByCandidatoId(candidatoId);
+        log.info("Candidato {} tiene {} votos", candidato.getNombreCompleto(), count);
+
+        return new VotoCountResponseDTO(
+                candidato.getId(),
+                candidato.getNombreCompleto(),
+                count
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public VotoCountResponseDTO countByPartidoDetallado(Long partidoId) {
+        log.info("Obteniendo conteo detallado de votos del partido id {}", partidoId);
+
+        PartidoPolitico partido = partidoRepository.findById(partidoId)
+                .orElseThrow(() -> {
+                    log.warn("No se puede obtener conteo porque el partido id {} no existe", partidoId);
+                    return new ResourceNotFoundException("PartidoPolitico", "id", partidoId);
+                });
+
+        Long count = votoRepository.countByPartidoId(partidoId);
+        log.info("Partido {} tiene {} votos", partido.getNombre(), count);
+
+        return new VotoCountResponseDTO(
+                partido.getId(),
+                partido.getNombre(),
+                count
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<VotosCountDTO> getEstadisticasPorCandidato() {
         log.info("Generando estadisticas de votos por candidato");
         List<Candidato> candidatos = candidatoRepository.findAll();
