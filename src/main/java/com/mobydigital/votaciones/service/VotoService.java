@@ -1,5 +1,6 @@
 package com.mobydigital.votaciones.service;
 
+import com.mobydigital.votaciones.dto.VotoCountResponseDTO;
 import com.mobydigital.votaciones.dto.VotoRequestDTO;
 import com.mobydigital.votaciones.dto.VotoResponseDTO;
 import com.mobydigital.votaciones.dto.VotosCountDTO;
@@ -30,6 +31,16 @@ public interface VotoService {
      * Cuenta los votos de un partido especifico
      */
     Long countByPartido(Long partidoId);
+
+    /**
+     * Obtiene el conteo de votos de un candidato con informacion estructurada
+     */
+    VotoCountResponseDTO countByCandidatoDetallado(Long candidatoId);
+
+    /**
+     * Obtiene el conteo de votos de un partido con informacion estructurada
+     */
+    VotoCountResponseDTO countByPartidoDetallado(Long partidoId);
 
     /**
      * Obtiene estadisticas de votos por candidato
