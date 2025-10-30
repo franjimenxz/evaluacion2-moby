@@ -1,5 +1,6 @@
 package com.mobydigital.votaciones.controller;
 
+import com.mobydigital.votaciones.dto.VotoCountResponseDTO;
 import com.mobydigital.votaciones.dto.VotoRequestDTO;
 import com.mobydigital.votaciones.dto.VotoResponseDTO;
 import com.mobydigital.votaciones.dto.VotosCountDTO;
@@ -49,25 +50,26 @@ public class VotoController {
         return ResponseEntity.ok(votos);
     }
 
-    @Operation(summary = "Contar votos por candidato", description = "Obtiene el numero total de votos de un candidato")
+    @Operation(summary = "Contar votos por candidato", description = "Obtiene el numero total de votos de un candidato con informacion detallada")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Conteo obtenido exitosamente"),
             @ApiResponse(responseCode = "404", description = "Candidato no encontrado")
     })
     @GetMapping("/count/candidato/{candidatoId}")
-    public ResponseEntity<Long> countByCandidato(@PathVariable Long candidatoId) {
-        Long count = service.countByCandidato(candidatoId);
-        return ResponseEntity.ok(count);
+    public ResponseEntity<VotoCountResponseDTO> countByCandidato(@PathVariable Long candidatoId) {
+        VotoCountResponseDTO response = service.countByCandidatoDetallado(candidatoId);
+        return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Contar votos por partido", description = "Obtiene el numero total de votos de un partido politico")
+    @Operation(summary = "Contar votos por partido", description = "Obtiene el numero total de votos de un partido politico con informacion detallada")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Conteo obtenido exitosamente")
+            @ApiResponse(responseCode = "200", description = "Conteo obtenido exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Partido no encontrado")
     })
     @GetMapping("/count/partido/{partidoId}")
-    public ResponseEntity<Long> countByPartido(@PathVariable Long partidoId) {
-        Long count = service.countByPartido(partidoId);
-        return ResponseEntity.ok(count);
+    public ResponseEntity<VotoCountResponseDTO> countByPartido(@PathVariable Long partidoId) {
+        VotoCountResponseDTO response = service.countByPartidoDetallado(partidoId);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Estadisticas por candidato", description = "Obtiene estadisticas detalladas de votos por candidato")
