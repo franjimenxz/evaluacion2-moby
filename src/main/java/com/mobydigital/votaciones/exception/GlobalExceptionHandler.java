@@ -2,6 +2,7 @@ package com.mobydigital.votaciones.exception;
 
 import com.mobydigital.votaciones.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -16,6 +17,7 @@ import java.util.Map;
  * Manejador global de excepciones para toda la aplicacion
  * Captura excepciones y devuelve respuestas HTTP apropiadas
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -26,6 +28,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleResourceNotFound(
             ResourceNotFoundException ex,
             HttpServletRequest request) {
+
+        log.warn("Recurso no encontrado en {} mensaje {}", request.getRequestURI(), ex.getMessage());
 
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
@@ -44,6 +48,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleBadRequest(
             BadRequestException ex,
             HttpServletRequest request) {
+
+        log.warn("Peticion invalida en {} mensaje {}", request.getRequestURI(), ex.getMessage());
 
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
@@ -70,6 +76,8 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
+        log.warn("Errores de validacion en {} campos con errores {}", request.getRequestURI(), errors.keySet());
+
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", java.time.LocalDateTime.now());
         response.put("status", HttpStatus.BAD_REQUEST.value());
@@ -87,6 +95,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(
             Exception ex,
             HttpServletRequest request) {
+
+        log.error("Error inesperado en {} tipo {} mensaje {}",
+                request.getRequestURI(), ex.getClass().getSimpleName(), ex.getMessage(), ex);
 
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),

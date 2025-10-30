@@ -12,6 +12,7 @@ import com.mobydigital.votaciones.exception.ResourceNotFoundException;
 import com.mobydigital.votaciones.repository.CandidatoRepository;
 import com.mobydigital.votaciones.repository.VotoRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.util.List;
 /**
  * Implementacion del servicio de Voto
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class VotoServiceImpl implements VotoService {
@@ -32,46 +34,65 @@ public class VotoServiceImpl implements VotoService {
     @Override
     @Transactional
     public VotoResponseDTO registrarVoto(VotoRequestDTO request) {
+        log.info("Registrando voto para candidato id {}", request.getCandidatoId());
+
         // Validar que el candidato existe
         Candidato candidato = candidatoRepository.findById(request.getCandidatoId())
-                .orElseThrow(() -> new ResourceNotFoundException("Candidato", "id", request.getCandidatoId()));
+                .orElseThrow(() -> {
+                    log.warn("No se puede registrar voto porque el candidato id {} no existe", request.getCandidatoId());
+                    return new ResourceNotFoundException("Candidato", "id", request.getCandidatoId());
+                });
 
         Voto voto = new Voto();
         voto.setCandidato(candidato);
         voto.setFechaEmision(LocalDateTime.now());
 
         Voto savedVoto = votoRepository.save(voto);
+        log.info("Voto registrado exitosamente id {} para candidato {} del partido {}",
+                savedVoto.getId(), candidato.getNombreCompleto(), candidato.getPartido().getSigla());
         return mapToResponseDTO(savedVoto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<VotoResponseDTO> findAll() {
-        return votoRepository.findAll().stream()
+        log.info("Consultando todos los votos");
+        List<VotoResponseDTO> votos = votoRepository.findAll().stream()
                 .map(this::mapToResponseDTO)
                 .toList();
+        log.info("Se encontraron {} votos registrados", votos.size());
+        return votos;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Long countByCandidato(Long candidatoId) {
+        log.info("Contando votos del candidato id {}", candidatoId);
+
         // Validar que el candidato existe
         if (!candidatoRepository.existsById(candidatoId)) {
+            log.warn("No se pueden contar votos porque el candidato id {} no existe", candidatoId);
             throw new ResourceNotFoundException("Candidato", "id", candidatoId);
         }
 
-        return votoRepository.countByCandidatoId(candidatoId);
+        Long count = votoRepository.countByCandidatoId(candidatoId);
+        log.info("El candidato id {} tiene {} votos", candidatoId, count);
+        return count;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Long countByPartido(Long partidoId) {
-        return votoRepository.countByPartidoId(partidoId);
+        log.info("Contando votos del partido id {}", partidoId);
+        Long count = votoRepository.countByPartidoId(partidoId);
+        log.info("El partido id {} tiene {} votos", partidoId, count);
+        return count;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<VotosCountDTO> getEstadisticasPorCandidato() {
+        log.info("Generando estadisticas de votos por candidato");
         List<Candidato> candidatos = candidatoRepository.findAll();
         List<VotosCountDTO> estadisticas = new ArrayList<>();
 
@@ -84,12 +105,14 @@ public class VotoServiceImpl implements VotoService {
             estadisticas.add(dto);
         }
 
+        log.info("Estadisticas generadas para {} candidatos", estadisticas.size());
         return estadisticas;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<VotosCountDTO> getEstadisticasPorPartido() {
+        log.info("Generando estadisticas de votos por partido");
         List<Object[]> resultados = votoRepository.countVotosByPartido();
         List<VotosCountDTO> estadisticas = new ArrayList<>();
 
@@ -104,6 +127,7 @@ public class VotoServiceImpl implements VotoService {
             estadisticas.add(dto);
         }
 
+        log.info("Estadisticas generadas para {} partidos", estadisticas.size());
         return estadisticas;
     }
 
